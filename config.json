@@ -1,0 +1,19 @@
+{
+  "mirakurunPath": "http+unix://%2Fvar%2Frun%2Fmirakurun.sock/",
+
+  "recordedDir" : "./recorded/",
+
+  "wuiPort": null,
+  "wuiHost": "0.0.0.0",
+  "wuiOpenServer": true,
+  "wuiOpenHost": "0.0.0.0",
+  "wuiOpenPort": 20772,
+  "wuiDLNAServerEnabled": false,
+  "wuiMdnsAdvertisement": false,
+
+  "recordedFormat": "[<date:yymmdd-HHMM>][<type><channel>][<channel-name>]<title>.m2ts",
+  "storageLowSpaceThresholdMB": 3000,
+  "storageLowSpaceAction": "remove",
+  "storageLowSpaceNotifyTo": null,
+  "storageLowSpaceCommand": ""
+}

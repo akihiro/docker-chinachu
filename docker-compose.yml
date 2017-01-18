@@ -1,0 +1,13 @@
+version: '2'
+services:
+  chiunachu:
+    image: mhiroaki/chinachu
+    volumes:
+      - /var/run/mirakurun.sock:/var/run/mirakurun.sock
+      - ./config.json:/usr/src/app/config.json:ro
+      - ./rules.json:/usr/src/app/rules.json:rw
+      - ./log:/usr/src/app/log
+      - ./data:/usr/src/app/data
+      - ./recorded:/usr/src/app/recorded
+    ports:
+      - 20772:20772
