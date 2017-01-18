@@ -1,0 +1,20 @@
+{
+  "apps":[
+    {
+      "script": "./app-operator.js",
+      "instances": 1,
+      "out_file": "./log/operator",
+      "error_file": "./log/operator",
+      "pid_file": "/var/run/chinachu-operator.pid",
+      "name": "operator"
+    },
+    {
+      "script": "./app-wui.js",
+      "instances": 1,
+      "out_file": "./log/wui",
+      "error_file": "./log/wui",
+      "pid_file": "/var/run/chinachu-wui.pid",
+      "name": "wui"
+    }
+  ]
+}
