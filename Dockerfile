@@ -1,29 +1,40 @@
-FROM node:6
+FROM node:8-alpine
 
-RUN curl -o /tmp/ffmpeg.tar.xz -L http://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz \
- && tar xavf /tmp/ffmpeg.tar.xz ffmpeg-3.2.2-64bit-static/ffmpeg \
- && mv ffmpeg-3.2.2-64bit-static/ffmpeg /usr/local/bin/ \
+RUN apk add -U
+RUN apk add openssl git python make gcc g++
+
+RUN wget -O /tmp/ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz \
+ && tar xJvf /tmp/ffmpeg.tar.xz ffmpeg-3.4.1-64bit-static/ffmpeg \
+ && mv ffmpeg-3.4.1-64bit-static/ffmpeg /usr/local/bin/ \
  && rm -rf /tmp/ffmpeg*
-RUN npm install pm2 -g
+
+RUN npm install -g pm2
+
+WORKDIR /usr/src/app
+RUN git clone https://github.com/Chinachu/Chinachu.git .
 
 ENV NODE_ENV production
-CMD ["pm2-docker", "processes.json"]
-EXPOSE 20772
 
-RUN mkdir -p /usr/src/app && git clone --depth 1 https://github.com/Chinachu/Chinachu.git /usr/src/app/
-ADD processes.json /usr/src/app/processes.json
+RUN git submodule init
+RUN git submodule update
+RUN npm install
+RUN npm update
+
+RUN install -o node -g node config.sample.json config.json
+RUN install -o node -g node rules.sample.json rules.json
+RUN install -o node -g node -d log data recorded
+
+FROM node:8-alpine
+COPY --from=0 /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=0 /usr/src/app /usr/src/app
+COPY --from=0 /usr/local/lib/node_modules/pm2 /usr/local/lib/node_modules/pm2
+RUN ln -s /usr/local/lib/node_modules/pm2/bin/pm2-runtime /usr/local/bin/
+RUN ln -s /usr/local/lib/node_modules/pm2/bin/pm2 /usr/local/bin/
+
 WORKDIR /usr/src/app
 VOLUME /usr/src/app/data
 VOLUME /usr/src/app/recorded
-RUN npm install \
- && git submodule init \
- && git submodule update \
- && install -o node -g node config.sample.json config.json \
- && install -o node -g node rules.sample.json rules.json \
- && install -o node -g node -d log \
- && install -o node -g node -d data \
- && install -o node -g node -d recorded \
- && ln -sf chinachu-operator-0.pid /var/run/chinachu-operator.pid \
- && ln -sf chinachu-wui-1.pid /var/run/chinachu-wui.pid
-
+VOLUME /usr/local/var/log/
+CMD ["pm2-runtime", "processes.json"]
+EXPOSE 20772
 USER node
