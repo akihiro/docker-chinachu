@@ -1,6 +1,6 @@
 version: '2'
 services:
-  chiunachu:
+  chinachu:
     image: mhiroaki/chinachu
     volumes:
       - /var/run/mirakurun.sock:/var/run/mirakurun.sock
