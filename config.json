@@ -1,5 +1,4 @@
 {
-  "uid": "node",
   "mirakurunPath": "http+unix://%2Fvar%2Frun%2Fmirakurun.sock/",
   "recordedDir" : "./recorded/",
   "wuiOpenServer": true,

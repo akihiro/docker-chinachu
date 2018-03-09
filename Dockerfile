@@ -39,6 +39,7 @@ WORKDIR /usr/src/app
 VOLUME /usr/src/app/data
 VOLUME /usr/src/app/recorded
 VOLUME /usr/local/var/log/
+VOLUME /usr/local/var/run/
 CMD ["pm2-runtime", "processes.json"]
 EXPOSE 20772
 USER node
