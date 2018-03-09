@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:8-alpine as ffmpeg
 RUN apk add --no-cache openssl git python make gcc g++
 
 RUN wget -O /tmp/ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz \
@@ -6,8 +6,11 @@ RUN wget -O /tmp/ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-
  && mv ffmpeg-*-64bit-static/ffmpeg /usr/local/bin/ \
  && rm -rf /tmp/ffmpeg*
 
+FROM node:8-alpine as pm2
 RUN npm install -g pm2
 
+FROM node:8-alpine as chinachu
+RUN apk add --no-cache openssl git python make gcc g++
 WORKDIR /usr/src/app
 RUN git clone https://github.com/Chinachu/Chinachu.git .
 
@@ -23,11 +26,14 @@ RUN install -o node -g node rules.sample.json rules.json
 RUN install -o node -g node -d log data recorded
 
 FROM node:8-alpine
-COPY --from=0 /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
-COPY --from=0 /usr/src/app /usr/src/app
-COPY --from=0 /usr/local/lib/node_modules/pm2 /usr/local/lib/node_modules/pm2
-RUN ln -s /usr/local/lib/node_modules/pm2/bin/pm2-runtime /usr/local/bin/
-RUN ln -s /usr/local/lib/node_modules/pm2/bin/pm2 /usr/local/bin/
+COPY --from=ffmpeg /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
+COPY --from=pm2 /usr/local/lib/node_modules/pm2 /usr/local/lib/node_modules/pm2
+RUN mkdir -p /usr/local/var/run /usr/local/var/log \
+ && chown node:node /usr/local/var/run /usr/local/var/log \
+ && ln -s ../lib/node_modules/pm2/bin/pm2-runtime /usr/local/bin/ \
+ && ln -s ../lib/node_modules/pm2/bin/pm2 /usr/local/bin/
+
+COPY --from=chinachu /usr/src/app /usr/src/app
 
 WORKDIR /usr/src/app
 VOLUME /usr/src/app/data
