@@ -2,8 +2,8 @@ FROM node:8-alpine
 RUN apk add --no-cache openssl git python make gcc g++
 
 RUN wget -O /tmp/ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz \
- && tar xJvf /tmp/ffmpeg.tar.xz ffmpeg-3.4.1-64bit-static/ffmpeg \
- && mv ffmpeg-3.4.1-64bit-static/ffmpeg /usr/local/bin/ \
+ && tar xJvf /tmp/ffmpeg.tar.xz \
+ && mv ffmpeg-*-64bit-static/ffmpeg /usr/local/bin/ \
  && rm -rf /tmp/ffmpeg*
 
 RUN npm install -g pm2
