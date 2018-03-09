@@ -1,7 +1,5 @@
 FROM node:8-alpine
-
-RUN apk add -U
-RUN apk add openssl git python make gcc g++
+RUN apk add --no-cache openssl git python make gcc g++
 
 RUN wget -O /tmp/ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz \
  && tar xJvf /tmp/ffmpeg.tar.xz ffmpeg-3.4.1-64bit-static/ffmpeg \
