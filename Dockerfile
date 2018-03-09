@@ -25,6 +25,8 @@ RUN install -o node -g node config.sample.json config.json
 RUN install -o node -g node rules.sample.json rules.json
 RUN install -o node -g node -d log data recorded
 
+COPY processes.json .
+
 FROM node:8-alpine
 COPY --from=ffmpeg /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=pm2 /usr/local/lib/node_modules/pm2 /usr/local/lib/node_modules/pm2
