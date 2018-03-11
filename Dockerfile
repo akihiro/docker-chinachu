@@ -34,6 +34,7 @@ RUN rm -rf web/lib/bootstrap/js
 RUN mv web/lib/crossfilter/crossfilter.min.js . && rm -rf web/lib/crossfilter/ && mkdir -p web/lib/crossfilter/ && mv crossfilter.min.js web/lib/crossfilter/crossfilter.min.js
 
 FROM node:8-alpine
+RUN apk add --no-cache bash
 COPY --from=ffmpeg /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=pm2 /usr/local/lib/node_modules/pm2 /usr/local/lib/node_modules/pm2
 RUN mkdir -p /usr/local/var/run /usr/local/var/log \
