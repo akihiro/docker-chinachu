@@ -1,3 +1,10 @@
 wui
 operator
 scheduler
+
+chinachu-operator.pid
+chinachu-operator.stderr.log
+chinachu-operator.stdout.log
+chinachu-wui.pid
+chinachu-wui.stderr.log
+chinachu-wui.stdout.log
