@@ -1,7 +1,7 @@
 version: '2'
 services:
   chinachu:
-    image: mhiroaki/chinachu
+    image: mhiroaki/docker-chinachu
     volumes:
       - /var/run/mirakurun.sock:/var/run/mirakurun.sock
       - ./config.json:/usr/src/app/config.json:ro
