@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ "$#" -eq 2 -a "$1" = "--block-size=512" ]; then
+  echo
+  df -B 512 "$2" | tail -n+2 | while read token; do echo -n " $token"; done
+  echo
+else
+  /bin/df "$@"
+fi
