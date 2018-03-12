@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$#" -eq 5 -a "$1" = h -a "$2" = -p -a "$4" = -o -a "$5" = %cpu,rss ]; then
+	if [ -d "/proc/$3/" ]; then
+		echo "pid:$3 is exists"
+		exit 0
+	else
+		exit 1
+	fi
+fi
+
+/bin/ps "$@"
