@@ -4,6 +4,7 @@ dockerize-chiunachu
 ```bash
 docker run \
   -d -p 20772:20772 --restart=always --name chinachu \
+  -v /etc/localtime:/etc/localtime:ro \
   -v /var/run/mirakurun.sock:/var/run/mirakurun.sock:rw \
   -v /path/to/config.json:/usr/src/app/config.json \
   -v /path/to/rules.json:/usr/src/app/rules.json:rw \

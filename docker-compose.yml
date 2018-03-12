@@ -3,6 +3,7 @@ services:
   chinachu:
     image: mhiroaki/docker-chinachu
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/mirakurun.sock:/var/run/mirakurun.sock
       - ./config.json:/usr/src/app/config.json:ro
       - ./rules.json:/usr/src/app/rules.json:rw
