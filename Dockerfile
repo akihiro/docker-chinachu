@@ -37,13 +37,11 @@ FROM node:8-alpine
 RUN apk add --no-cache bash
 COPY --from=ffmpeg /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=pm2 /usr/local/lib/node_modules/pm2 /usr/local/lib/node_modules/pm2
+COPY --from=chinachu /usr/src/app /usr/src/app
 COPY ./hacks/ /usr/local/bin/
-RUN mkdir -p /usr/local/var/run /usr/local/var/log \
- && chown node:node /usr/local/var/run /usr/local/var/log \
+RUN chown node:node /usr/src/app/data /usr/src/app/recorded /usr/src/app/log \
  && ln -s ../lib/node_modules/pm2/bin/pm2-runtime /usr/local/bin/ \
  && ln -s ../lib/node_modules/pm2/bin/pm2 /usr/local/bin/
-
-COPY --from=chinachu /usr/src/app /usr/src/app
 
 WORKDIR /usr/src/app
 VOLUME /usr/src/app/data
