@@ -2,10 +2,10 @@ FROM node:14-alpine as builder
 RUN apk add --no-cache openssl git python make gcc g++
 
 FROM builder as ffmpeg
-RUN wget -O /tmp/ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz \
- && tar xJvf /tmp/ffmpeg.tar.xz \
- && mv ffmpeg-*-64bit-static/ffmpeg /usr/local/bin/ \
- && rm -rf /tmp/ffmpeg*
+RUN wget -O /tmp/ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
+RUN tar xJvf /tmp/ffmpeg.tar.xz
+RUN mv ffmpeg-*-static/ffmpeg /usr/local/bin/
+RUN rm -rf /tmp/ffmpeg*
 
 FROM builder as pm2
 RUN npm install -g pm2
