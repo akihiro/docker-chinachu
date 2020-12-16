@@ -1,16 +1,16 @@
-FROM node:8-alpine as ffmpeg
+FROM node:14-alpine as builder
 RUN apk add --no-cache openssl git python make gcc g++
 
+FROM builder as ffmpeg
 RUN wget -O /tmp/ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz \
  && tar xJvf /tmp/ffmpeg.tar.xz \
  && mv ffmpeg-*-64bit-static/ffmpeg /usr/local/bin/ \
  && rm -rf /tmp/ffmpeg*
 
-FROM node:8-alpine as pm2
+FROM builder as pm2
 RUN npm install -g pm2
 
-FROM node:8-alpine as chinachu
-RUN apk add --no-cache openssl git python make gcc g++
+FROM builder as chinachu
 WORKDIR /usr/src/app
 RUN git clone https://github.com/Chinachu/Chinachu.git .
 
@@ -33,7 +33,7 @@ RUN mv web/lib/d3/d3.min.js . && rm -rf web/lib/d3 && mkdir -p web/lib/d3 && mv 
 RUN rm -rf web/lib/bootstrap/js
 RUN mv web/lib/crossfilter/crossfilter.min.js . && rm -rf web/lib/crossfilter/ && mkdir -p web/lib/crossfilter/ && mv crossfilter.min.js web/lib/crossfilter/crossfilter.min.js
 
-FROM node:8-alpine
+FROM node:14-alpine
 RUN apk add --no-cache bash
 COPY --from=ffmpeg /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=pm2 /usr/local/lib/node_modules/pm2 /usr/local/lib/node_modules/pm2
